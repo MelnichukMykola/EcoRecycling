@@ -1,0 +1,42 @@
+$color-text: #1a1a1a;
+$color-muted: #3b3b3b;
+$color-border: #e5e7eb;
+$color-primary: #7c3aed; // fiolet
+$focus-ring: 0 0 0 3px rgba(124, 58, 237, 0.25);
+$radius: 10px;
+
+@mixin focusable {
+    &:focus-visible {
+        outline: none;
+        box-shadow: $focus-ring;
+    }
+}
+
+@mixin btn {
+    padding: 10px 14px;
+    border: 0;
+    border-radius: $radius;
+    background: $color-primary;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: filter 0.15s ease, transform 0.05s ease;
+    &:hover {
+        filter: brightness(1.05);
+    }
+    &:active {
+        transform: translateY(1px);
+    }
+    @include focusable;
+}
+
+@mixin input {
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    &:focus {
+        border-color: $color-primary;
+        box-shadow: $focus-ring;
+    }
+}

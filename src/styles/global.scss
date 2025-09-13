@@ -1,0 +1,15 @@
+@use "./_vars" as *;
+
+* {
+    box-sizing: border-box;
+}
+html,
+body,
+#root {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    color: $color-text;
+}

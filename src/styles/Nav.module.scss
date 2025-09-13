@@ -1,0 +1,117 @@
+@use "./_vars" as *;
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.brand {
+    font-weight: 700;
+    text-decoration: none;
+    color: inherit;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.nav {
+    display: flex;
+    gap: 12px;
+    a,
+    button {
+        background: transparent;
+        border: none;
+        padding: 6px 10px;
+        cursor: pointer;
+        text-decoration: underline;
+        color: $color-muted;
+        &:hover {
+            color: #000;
+        }
+    }
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatarBtn {
+    width: 36px;
+    height: 36px;
+    border-radius: 9999px;
+    border: 1px solid $color-border;
+    background: #f8fafc;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: box-shadow 0.15s ease, transform 0.05s ease;
+    &:hover {
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+    &:active {
+        transform: translateY(1px);
+    }
+    @include focusable;
+}
+
+.avatarImg {
+    width: 100%;
+    height: 100%;
+    border-radius: 9999px;
+    object-fit: cover;
+    display: block;
+}
+.avatarFallback {
+    font-weight: 700;
+    font-size: 14px;
+    color: #334155;
+}
+
+.iconBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: $radius;
+    border: 1px solid $color-border;
+    background: #fff;
+    cursor: pointer;
+    text-decoration: none;
+    transition: box-shadow 0.15s ease, transform 0.05s ease, background 0.15s ease;
+    &:hover {
+        background: #f8fafc;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+    &:active {
+        transform: translateY(1px);
+    }
+    @include focusable;
+}
+.icon {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2;
+}
+
+.userName {
+    font-weight: 600;
+    color: #1f2937;
+    &::after {
+        content: "";
+        display: inline-block;
+        width: 1px;
+        height: 16px;
+        background: #e5e7eb;
+        margin: 0 8px;
+        vertical-align: middle;
+    }
+}

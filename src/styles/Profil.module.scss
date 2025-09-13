@@ -1,0 +1,38 @@
+@use "./_vars" as *;
+
+.container {
+    margin-top: 16px;
+}
+.title {
+    margin-bottom: 12px;
+    font-size: 22px;
+    font-weight: 700;
+}
+.form {
+    display: grid;
+    gap: 10px;
+    max-width: 380px;
+}
+.label {
+    display: grid;
+    gap: 6px;
+    font-size: 14px;
+}
+.input {
+    @include input;
+}
+.button {
+    @include btn;
+}
+.link {
+    margin-top: 8px;
+    font-size: 14px;
+    a {
+        color: $color-primary;
+    }
+}
+.message {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #333;
+}
