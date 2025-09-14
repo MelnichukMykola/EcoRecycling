@@ -1,8 +1,9 @@
+// src/components/Nav.jsx
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext.jsx";
-import styles from "../styles/Nav.module.scss";
 import { LogOut } from "lucide-react";
+import styles from "../styles/Nav.module.scss";
 
 export default function Nav() {
   const { user, signOutUser } = useAuth();
@@ -11,7 +12,10 @@ export default function Nav() {
   const displayName =
     (user?.displayName && user.displayName.trim()) ||
     (user?.email ? user.email.split("@")[0] : "");
+
   const initial = (displayName?.[0] || "U").toUpperCase();
+
+  const logoUrl = `${import.meta.env.BASE_URL}cannabis.svg`;
 
   function handleAvatarClick() {
     navigate(user ? "/profil" : "/logowanie");
@@ -21,17 +25,17 @@ export default function Nav() {
     <header className={styles.header}>
       <Link to="/" className={styles.brand}>
         <img
-          src="/cannabis.svg"
+          src={logoUrl}
           alt=""
-          aria-hidden="true"
-          className={styles.brandIcon}
+          width="22"
+          height="22"
+          className={styles.logoIcon}
         />
-        <span className={styles.brandText}>EkoRecykling</span>
+        EkoRecykling
       </Link>
 
       <div className={styles.actions}>
         {user && <span className={styles.userName}>{displayName}</span>}
-
         {user && (
           <button
             type="button"
@@ -43,7 +47,6 @@ export default function Nav() {
             <LogOut className={styles.icon} />
           </button>
         )}
-
         <button
           type="button"
           className={styles.avatarBtn}
