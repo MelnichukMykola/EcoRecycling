@@ -1,121 +1,121 @@
 @use "../styles/_vars" as *;
 
 .container {
-    margin-top: 16px;
+  margin-top: 16px;
 }
 
 .hero {
-    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
-    border: 1px solid $color-border;
-    border-radius: 16px;
-    padding: 24px;
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+  border: 1px solid $color-border;
+  border-radius: 16px;
+  padding: 24px;
 }
 
 .title {
-    margin: 0 0 8px;
-    font-size: 32px;
-    line-height: 1.2;
-    font-weight: 800;
-    letter-spacing: -0.02em;
+  margin: 0 0 8px;
+  font-size: 32px;
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .subtitle {
-    margin: 0 0 16px;
-    font-size: 16px;
-    color: $color-muted;
+  margin: 0 0 16px;
+  font-size: 16px;
+  color: $color-muted;
 }
 
 .ctaRow {
-    display: flex;
-    gap: 10px;
-    margin: 12px 0 4px;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 10px;
+  margin: 12px 0 0;
+  flex-wrap: wrap;
 }
 
 .btnPrimary {
-    @include btn;
+  @include btn;
 }
 .btnGhost {
-    @include btn;
-    background: #fff;
-    color: $color-primary;
-    border: 1px solid rgba(124, 58, 237, 0.25);
+  @include btn;
+  background: #fff;
+  color: $color-primary;
+  border: 1px solid rgba(124, 58, 237, 0.25);
 }
 
 .note {
-    margin-top: 6px;
-    font-size: 12px;
-    color: #6b7280;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #6b7280;
 }
 
 .how {
-    margin-top: 24px;
+  margin-top: 24px;
 
-    h2 {
-        margin: 0 0 12px;
-        font-size: 20px;
-        font-weight: 700;
-    }
+  h2 {
+    margin: 0 0 12px;
+    font-size: 20px;
+    font-weight: 700;
+  }
 }
 
 .steps {
-    counter-reset: step;
+  counter-reset: step;
+  display: grid;
+  gap: 10px;
+  padding-left: 0;
+  list-style: none;
+
+  li {
     display: grid;
+    grid-template-columns: 28px 1fr;
+    align-items: center;
     gap: 10px;
-    padding-left: 0;
-    list-style: none;
+    padding: 10px 12px;
+    border: 1px solid $color-border;
+    border-radius: 12px;
+    background: #fff;
+  }
 
-    li {
-        display: grid;
-        grid-template-columns: 28px 1fr;
-        align-items: center;
-        gap: 10px;
-        padding: 10px 12px;
-        border: 1px solid $color-border;
-        border-radius: 12px;
-        background: #fff;
-    }
-
-    span {
-        width: 28px;
-        height: 28px;
-        border-radius: 9999px;
-        background: rgba(124, 58, 237, 0.1);
-        color: $color-primary;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-    }
+  span {
+    width: 28px;
+    height: 28px;
+    border-radius: 9999px;
+    background: rgba(124, 58, 237, 0.1);
+    color: $color-primary;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+  }
 }
 
 .features {
-    margin-top: 24px;
+  margin-top: 24px;
 }
 
 .grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
 
-    @media (max-width: 820px) {
-        grid-template-columns: 1fr;
-    }
+  @media (max-width: 820px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .card {
-    border: 1px solid $color-border;
-    border-radius: 16px;
-    padding: 16px;
-    background: #fff;
+  border: 1px solid $color-border;
+  border-radius: 16px;
+  padding: 16px;
+  background: #fff;
 
-    h3 {
-        margin: 0 0 6px;
-        font-size: 16px;
-        font-weight: 700;
-    }
-    p {
-        margin: 0;
-        color: $color-muted;
-    }
+  h3 {
+    margin: 0 0 6px;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  p {
+    margin: 0;
+    color: $color-muted;
+  }
 }

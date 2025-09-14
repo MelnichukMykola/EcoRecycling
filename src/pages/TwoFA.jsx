@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import QRCode from "qrcode";
 import { auth } from "../../firebase";
 import { multiFactor, TotpMultiFactorGenerator } from "firebase/auth";
-// import s from "../styles/TwoFA.module.scss";
 
 export default function TwoFA() {
     const [uri, setUri] = useState("");
@@ -16,7 +15,6 @@ export default function TwoFA() {
         try {
             const mfa = multiFactor(auth.currentUser);
             const session = await mfa.getSession();
-            // tworzymy sekret i URI do aplikacji uwierzytelniającej
             const secret = await TotpMultiFactorGenerator.generateSecret(session, {
                 accountName: auth.currentUser.email || "EcoApp",
                 issuer: "EcoApp",
@@ -24,7 +22,6 @@ export default function TwoFA() {
             setUri(secret.uri);
             const dataUrl = await QRCode.toDataURL(secret.uri);
             setQr(dataUrl);
-            // zachowujemy sekret tymczasowo, by móc potwierdzić
             window.__eco_totp_secret = secret;
         } catch (err) {
             setMsg(err.message);
@@ -40,7 +37,6 @@ export default function TwoFA() {
                 setMsg("Najpierw wygeneruj kod i zeskanuj QR.");
                 return;
             }
-            // użytkownik wpisuje 6-cyfrowy kod z aplikacji
             const assertion = TotpMultiFactorGenerator.assertionForEnrollment(secret, kod);
             const mfa = multiFactor(auth.currentUser);
             await mfa.enroll(assertion, "TOTP");

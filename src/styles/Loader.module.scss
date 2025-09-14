@@ -1,0 +1,36 @@
+@use "./_vars" as *;
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.fullscreen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: #ffffff;
+  z-index: 9999;
+}
+
+.inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  color: $color-primary;
+  animation: spin 1s linear infinite;
+}
+
+.text {
+  font-weight: 700;
+  color: #334155;
+}
