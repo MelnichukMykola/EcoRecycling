@@ -1,4 +1,3 @@
-// src/components/Nav.jsx
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext.jsx";
