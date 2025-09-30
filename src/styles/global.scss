@@ -1,15 +1,77 @@
 @use "./_vars" as *;
 
+/* Reset/box */
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 html,
 body,
 #root {
-    height: 100%;
+  height: 100%;
 }
+
 body {
-    margin: 0;
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-    color: $color-text;
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  color: $color-text;
+  background: radial-gradient(
+      700px 420px at 12% -6%,
+      rgba(36, 193, 122, 0.08),
+      transparent 60%
+    ),
+    radial-gradient(
+      800px 480px at 110% -10%,
+      rgba(124, 58, 237, 0.06),
+      transparent 55%
+    ),
+    #f7faf9;
+}
+
+/* Pomocnicze utility (bez konfliktu z modułami) */
+.container {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 24px 20px 64px;
+}
+
+.card {
+  background: linear-gradient(180deg, #fff, #fff);
+  border: 1px solid $color-border;
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(16, 24, 40, 0.05);
+}
+
+/* Ogólne guziki używające Twojego miksina `btn` */
+.btnPrimary {
+  @include btn;
+}
+.btnGhost {
+  @include btn;
+  background: #fff;
+  color: $color-primary;
+  border: 1px solid rgba(124, 58, 237, 0.25);
+}
+
+/* Drobne utilities */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid $color-border;
+  background: #fff;
+  color: $color-muted;
+  font-size: 12px;
+  font-weight: 700;
+}
+.kbd {
+  padding: 2px 8px;
+  border: 1px solid $color-border;
+  border-bottom-width: 2px;
+  background: #f8fafc;
+  border-radius: 8px;
+  font: 700 12px/1.2 ui-sans-serif, system-ui;
 }

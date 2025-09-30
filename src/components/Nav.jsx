@@ -1,8 +1,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext.jsx";
-import { LogOut } from "lucide-react";
 import styles from "../styles/Nav.module.scss";
+import { LogOut } from "lucide-react";
 
 export default function Nav() {
   const { user, signOutUser } = useAuth();
@@ -14,51 +14,52 @@ export default function Nav() {
 
   const initial = (displayName?.[0] || "U").toUpperCase();
 
-  const logoUrl = `${import.meta.env.BASE_URL}cannabis.svg`;
-
   function handleAvatarClick() {
     navigate(user ? "/profil" : "/logowanie");
   }
 
   return (
-    <header className={styles.header}>
-      <Link to="/" className={styles.brand}>
-        <img
-          src={logoUrl}
-          alt=""
-          width="22"
-          height="22"
-          className={styles.logoIcon}
-        />
-        EkoRecykling
-      </Link>
+    // окремий «літаючий» блок хедера
+    <header className={styles.headerArea} role="banner">
+      <div className={styles.bar}>
+        <Link
+          to="/"
+          className={styles.brand}
+          aria-label="EkoRecykling – strona główna"
+        >
+          <img src="/cannabis.svg" alt="" className={styles.brandIcon} />
+          <span className={styles.brandText}>EkoRecykling</span>
+        </Link>
 
-      <div className={styles.actions}>
-        {user && <span className={styles.userName}>{displayName}</span>}
-        {user && (
+        <div className={styles.actions}>
+          {user && <span className={styles.userName}>{displayName}</span>}
+
+          {user && (
+            <button
+              type="button"
+              onClick={signOutUser}
+              className={styles.iconBtn}
+              aria-label="Wyloguj"
+              title="Wyloguj"
+            >
+              <LogOut className={styles.icon} />
+            </button>
+          )}
+
           <button
             type="button"
-            onClick={signOutUser}
-            className={styles.iconBtn}
-            aria-label="Wyloguj"
-            title="Wyloguj"
+            className={styles.avatarBtn}
+            onClick={handleAvatarClick}
+            aria-label={user ? "Otwórz profil" : "Przejdź do logowania"}
+            title={user ? "Profil" : "Logowanie"}
           >
-            <LogOut className={styles.icon} />
+            {user?.photoURL ? (
+              <img src={user.photoURL} alt="" className={styles.avatarImg} />
+            ) : (
+              <span className={styles.avatarFallback}>{initial}</span>
+            )}
           </button>
-        )}
-        <button
-          type="button"
-          className={styles.avatarBtn}
-          onClick={handleAvatarClick}
-          aria-label={user ? "Otwórz profil" : "Przejdź do logowania"}
-          title={user ? "Profil" : "Logowanie"}
-        >
-          {user?.photoURL ? (
-            <img src={user.photoURL} alt="" className={styles.avatarImg} />
-          ) : (
-            <span className={styles.avatarFallback}>{initial}</span>
-          )}
-        </button>
+        </div>
       </div>
     </header>
   );

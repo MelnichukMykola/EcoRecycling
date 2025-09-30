@@ -6,7 +6,7 @@ Aplikacja webowa (React + Vite), w której użytkownicy **zarabiają EcoCoins za
 
 ---
 
-## 🎯 Funkcje
+## 🎯 Funkcje 
 
 - Rejestracja i logowanie (Firebase Auth: e-mail + hasło) — [src/pages/Register.jsx](./src/pages/Register.jsx), [src/pages/Login.jsx](./src/pages/Login.jsx)
 - Reset i **zmiana hasła** — [src/pages/ResetHasla.jsx](./src/pages/ResetHasla.jsx), [src/pages/Profil.jsx](./src/pages/Profil.jsx)

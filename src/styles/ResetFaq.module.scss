@@ -1,0 +1,56 @@
+@use "../styles/_vars" as *;
+
+.wrap {
+  margin-top: 20px;
+}
+
+.title {
+  margin: 0 0 10px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.list {
+  display: grid;
+  gap: 8px;
+}
+
+.item {
+  border: 1px solid $color-border;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+
+  summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 12px 14px;
+    font-weight: 600;
+    position: relative;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &:after {
+      content: "▾";
+      position: absolute;
+      right: 14px;
+      top: 12px;
+      font-size: 14px;
+      color: $color-muted;
+      transition: transform 0.2s ease;
+    }
+  }
+
+  &[open] summary:after {
+    transform: rotate(180deg);
+  }
+
+  .body {
+    padding: 0 14px 12px 14px;
+    color: $color-muted;
+    font-size: 14px;
+  }
+}

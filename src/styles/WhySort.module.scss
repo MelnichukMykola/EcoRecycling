@@ -1,0 +1,94 @@
+@use "./_vars" as *;
+
+/* Повноширинний блок з фоновим фото та затемнюючим оверлеєм */
+.wrap {
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  width: 100vw;
+  padding: clamp(32px, 6vw, 72px) 0;
+  position: relative;
+  isolation: isolate;
+
+  /* Фото з public: /img/forest-bg.jpg */
+  background-image: url("/img/forest-bg.jpg");
+  background-size: cover;
+  background-position: center;
+
+  /* м’яке затемнення для читабельності тексту */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(2, 6, 23, 0.55), rgba(2, 6, 23, 0.35) 45%, rgba(2, 6, 23, 0.55));
+    z-index: 0;
+  }
+}
+
+.card {
+  position: relative;
+  z-index: 1;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: clamp(20px, 4vw, 40px);
+  color: #fff;
+  text-align: center;
+
+  /* скляна легка підкладка, щоб текст “стояв” на фото */
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 18px;
+  backdrop-filter: saturate(140%) blur(6px);
+  -webkit-backdrop-filter: saturate(140%) blur(6px);
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.25);
+}
+
+.title {
+  margin: 0 0 10px;
+  font-size: clamp(26px, 4vw, 36px);
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.lead {
+  margin: 0 auto;
+  max-width: 68ch;
+  font-size: 16px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media (max-width: 560px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.item {
+  text-align: left;
+  padding: 14px 16px;
+  border-radius: $radius;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+
+  h3 {
+    margin: 0 0 6px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+  }
+  p {
+    margin: 0;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.92);
+  }
+}
