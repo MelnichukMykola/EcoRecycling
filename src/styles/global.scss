@@ -49,8 +49,8 @@ body {
 .btnGhost {
   @include btn;
   background: #fff;
-  color: $color-primary;
-  border: 1px solid rgba(124, 58, 237, 0.25);
+  color: rgba(15, 95, 84, 0.9);
+  border: 1px solid rgba(15, 95, 84, 0.9);
 }
 
 /* Drobne utilities */

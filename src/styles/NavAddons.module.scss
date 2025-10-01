@@ -1,0 +1,59 @@
+$accent: #32675f;
+
+.menu {
+  display: flex;
+  gap: clamp(8px, 1.4vw, 16px);
+  align-items: center;
+  margin-left: clamp(8px, 2vw, 24px);
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 9999px;
+
+  /* скляна пігулка в тон верхнього бару */
+  color: #e9f6f2;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(6px);
+
+  transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:hover,
+  &:focus-visible {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.22);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(50, 103, 95, 0.28);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+/* коли місця мало — не ламаємо бар */
+@media (max-width: 780px) {
+  .menu {
+    gap: 8px;
+    margin-left: 10px;
+  }
+  .link {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 560px) {
+  /* на дуже вузьких екранах ховаємо «Profil», залишаємо якірні */
+  .link:last-child {
+    display: none;
+  }
+}

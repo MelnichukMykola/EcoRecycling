@@ -1,0 +1,268 @@
+$accent: #32675f;
+$ink: #0f172a;
+
+/* full-bleed forest bg */
+.lbWrap {
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  width: 100vw;
+  @supports (width: 100dvw) {
+    width: 100dvw;
+  }
+  position: relative;
+  overflow: hidden;
+  padding: clamp(26px, 5vw, 72px) 0;
+}
+.forestPanel {
+  background: radial-gradient(
+      120% 100% at 85% -20%,
+      rgba(50, 103, 95, 0.14),
+      transparent 60%
+    ),
+    radial-gradient(
+      120% 100% at 10% -15%,
+      rgba(20, 60, 54, 0.12),
+      transparent 60%
+    ),
+    linear-gradient(180deg, #f6fbf9 0%, #edf4f1 40%, #eaf2ef 100%);
+  isolation: isolate;
+}
+.forestPanel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+      520px 240px at 50% 4%,
+      rgba(50, 103, 95, 0.1),
+      transparent 70%
+    ),
+    radial-gradient(
+      140% 100% at 50% 6%,
+      transparent 65%,
+      rgba(13, 44, 38, 0.06) 100%
+    );
+  mix-blend-mode: multiply;
+}
+
+/* glass panel */
+.glass {
+  position: relative;
+  z-index: 1;
+  width: min(1040px, 100%);
+  margin: 0 auto;
+  padding: clamp(18px, 3vw, 28px);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  border: 1px solid rgba(2, 8, 23, 0.06);
+  box-shadow: 0 22px 48px rgba(8, 28, 24, 0.14),
+    0 3px 10px rgba(8, 28, 24, 0.08);
+}
+.glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent 60%
+  );
+  transform: translateX(-120%);
+  animation: sweep 6s ease-in-out infinite;
+  border-radius: inherit;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+@keyframes sweep {
+  0% {
+    transform: translateX(-120%);
+  }
+  60% {
+    transform: translateX(120%);
+  }
+  100% {
+    transform: translateX(120%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .glass::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+.head {
+  margin: 0 0 12px;
+}
+.title {
+  margin: 0;
+  font-weight: 800;
+  font-size: clamp(22px, 2.6vw, 32px);
+  letter-spacing: -0.01em;
+  color: $ink;
+}
+.note {
+  margin: 4px 0 0;
+  color: color-mix(in srgb, $ink 70%, $accent 30%);
+  font-size: 14px;
+}
+
+/* table */
+.tableWrap {
+  overflow: auto;
+  border-radius: 18px;
+  box-shadow: inset 0 0 0 1px rgba(2, 8, 23, 0.06);
+  background: rgba(255, 255, 255, 0.6);
+}
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 760px;
+}
+thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  text-align: left;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, $ink 65%, $accent 35%);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.92),
+    rgba(255, 255, 255, 0.86)
+  );
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(2, 8, 23, 0.08);
+}
+tbody td {
+  padding: 12px 14px;
+  font-size: 15px;
+  color: $ink;
+  background: rgba(255, 255, 255, 0.78);
+  border-bottom: 1px solid rgba(2, 8, 23, 0.06);
+}
+tbody tr:hover td {
+  background: rgba(255, 255, 255, 0.92);
+}
+
+/* rank + medals */
+.rank {
+  width: 56px;
+}
+.medal {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9999px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(180deg, #94a3a6, #66767a);
+  box-shadow: 0 0 0 3px rgba(50, 103, 95, 0.15),
+    0 6px 14px rgba(8, 28, 24, 0.18);
+}
+.gold {
+  background: linear-gradient(180deg, #ffde6b, #e6b94f);
+  color: #4a3b12;
+}
+.silver {
+  background: linear-gradient(180deg, #e6eef3, #cdd6dd);
+  color: #344;
+}
+.bronze {
+  background: linear-gradient(180deg, #f0c7a1, #ca936c);
+  color: #3a2a20;
+}
+
+/* person */
+.person {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  color: #fff;
+  background: radial-gradient(
+      circle at 30% 30%,
+      rgba(255, 255, 255, 0.18),
+      transparent 60%
+    ),
+    linear-gradient(180deg, lighten($accent, 2%), darken($accent, 6%));
+  box-shadow: 0 2px 6px rgba(8, 28, 24, 0.15);
+}
+.name {
+  white-space: nowrap;
+}
+
+/* city */
+.city {
+  color: color-mix(in srgb, $ink 72%, $accent 28%);
+}
+
+/* kg with bar */
+.kg {
+  position: relative;
+  font-variant-numeric: tabular-nums;
+}
+.kg .bar {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  top: 50%;
+  height: 6px;
+  transform: translateY(-50%);
+  border-radius: 9999px;
+  background: rgba(50, 103, 95, 0.12);
+}
+.kg .bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  width: var(--pct, 0%);
+  background: linear-gradient(
+    90deg,
+    rgba(50, 103, 95, 0.25),
+    rgba(50, 103, 95, 0.55)
+  );
+}
+.kg span {
+  position: relative;
+  z-index: 1;
+}
+
+/* eco & last */
+.eco {
+  font-variant-numeric: tabular-nums;
+}
+.last {
+  color: color-mix(in srgb, $ink 60%, $accent 40%);
+}
+
+/* rounded corners for the “cardy” look */
+thead th:first-child,
+tbody td:first-child {
+  border-top-left-radius: 14px;
+  border-bottom-left-radius: 14px;
+}
+thead th:last-child,
+tbody td:last-child {
+  border-top-right-radius: 14px;
+  border-bottom-right-radius: 14px;
+}

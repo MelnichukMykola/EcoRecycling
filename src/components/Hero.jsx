@@ -7,7 +7,7 @@ export default function Hero() {
   const { user } = useAuth();
 
   return (
-    <section className={`${s.heroWrap} ${s.blobs}`} aria-label="Intro">
+    <section className={`${s.heroWrap} ${s.blobss}`} aria-label="Intro">
       <div className="container">
         <div className={s.card}>
           <h1 className={s.title}>Zarabiaj za recykling odpadów</h1>

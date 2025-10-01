@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext.jsx";
 import styles from "../styles/Nav.module.scss";
 import { LogOut } from "lucide-react";
+import na from "../styles/NavAddons.module.scss";
 
 export default function Nav() {
   const { user, signOutUser } = useAuth();
@@ -19,7 +20,6 @@ export default function Nav() {
   }
 
   return (
-    // окремий «літаючий» блок хедера
     <header className={styles.headerArea} role="banner">
       <div className={styles.bar}>
         <Link
@@ -30,6 +30,17 @@ export default function Nav() {
           <img src="/cannabis.svg" alt="" className={styles.brandIcon} />
           <span className={styles.brandText}>EkoRecykling</span>
         </Link>
+        <nav className={na.menu}>
+          <a className={na.link} href="/#jak-to-dziala">
+            Jak to działa?
+          </a>
+          <a className={na.link} href="/#ranking">
+            Ranking
+          </a>
+          <Link className={na.link} to="/profil">
+            Profil
+          </Link>
+        </nav>
 
         <div className={styles.actions}>
           {user && <span className={styles.userName}>{displayName}</span>}

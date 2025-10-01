@@ -1,28 +1,23 @@
 @use "./_vars" as *;
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap");
 
-/* Повноширинна «зона» для прилипаючого хедера */
 .headerArea {
   position: sticky;
   top: env(safe-area-inset-top, 0px);
   z-index: 60;
 
-  /* трохи повітря по краях, щоб бар виглядав окремим блоком */
   padding: 12px 16px;
   display: flex;
   justify-content: center;
 
-  /* прозорий фон — хай проглядається секція під ним */
   background: transparent;
 }
 
-/* Сам «літаючий» бар */
 .bar {
   pointer-events: auto;
   width: min(1120px, 100%);
   border-radius: 18px;
 
-  /* напівпрозорий градієнт + скло */
   background: linear-gradient(
     90deg,
     rgba(11, 61, 54, 0.9) 0%,
@@ -34,7 +29,6 @@
 
   border: 1px solid rgba(255, 255, 255, 0.1);
 
-  /* тінь для «левітації» */
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25), 0 2px 8px rgba(0, 0, 0, 0.12);
 
   padding: 10px 16px;
@@ -43,11 +37,9 @@
   justify-content: space-between;
   gap: 12px;
 
-  /* легка анімація при скролі/ховері */
   transition: box-shadow 0.2s ease, background 0.2s ease;
 }
 
-/* Бренд */
 .brand {
   display: inline-flex;
   align-items: center;
@@ -68,7 +60,6 @@
   width: 28px;
   height: 28px;
   display: block;
-  /* якщо svg темний — зробимо світлим */
   filter: brightness(0) invert(1);
 }
 
@@ -76,14 +67,12 @@
   line-height: 1;
 }
 
-/* Правий блок */
 .actions {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-/* Кнопки/аватар у барі */
 .avatarBtn {
   width: 36px;
   height: 36px;
@@ -172,7 +161,6 @@
   }
 }
 
-/* Трохи компактніше на мобайлі */
 @media (max-width: 640px) {
   .bar {
     border-radius: 14px;
@@ -180,5 +168,5 @@
   }
   .userName {
     display: none;
-  } /* за бажанням */
+  }
 }
