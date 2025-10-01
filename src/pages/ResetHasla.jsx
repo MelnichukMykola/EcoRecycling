@@ -1,30 +1,73 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { sendPasswordResetEmail } from "firebase/auth";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../auth/AuthContext.jsx";
+import {
+  getMultiFactorResolver,
+  TotpMultiFactorGenerator,
+} from "firebase/auth";
 import { auth } from "../../firebase.js";
 import { useNotify } from "../ui/useNotify.js";
-import { authErrorPL } from "../utils/authErrorsPL.js";
-import s from "../styles/ResetHasla.module.scss";
-import ResetHelp from "../components/ResetHelp.jsx";
-import ResetFaq from "../components/ResetFaq.jsx";
+import { authErrorPL, authErrorFields } from "../utils/authErrorsPL.js";
+import s from "../styles/Login.module.scss";
 
-export default function ResetHasla() {
+export default function Login() {
   const [email, setEmail] = useState("");
+  const [haslo, setHaslo] = useState("");
+  const [resolver, setResolver] = useState(null);
+  const [kod, setKod] = useState("");
   const [loading, setLoading] = useState(false);
-  const notify = useNotify();
+
+  const [emailErr, setEmailErr] = useState(false);
+  const [passErr, setPassErr] = useState(false);
+  const [totpErr, setTotpErr] = useState(false);
+
+  const { signIn } = useAuth();
   const nav = useNavigate();
+  const notify = useNotify();
 
   async function submit(e) {
     e.preventDefault();
     setLoading(true);
+    setEmailErr(false);
+    setPassErr(false);
+
     try {
-      await sendPasswordResetEmail(auth, email.trim(), {
-        url: `${window.location.origin}${import.meta.env.BASE_URL}logowanie`,
-        handleCodeInApp: false,
-      });
-      setEmail("");
-      notify.success("Wysłaliśmy e-mail z linkiem do resetu hasła.");
+      await signIn(email.trim(), haslo);
+      notify.success("Zalogowano pomyślnie.");
+      nav("/profil");
     } catch (err) {
+      if (err?.code === "auth/multi-factor-auth-required") {
+        const r = getMultiFactorResolver(auth, err);
+        setResolver(r);
+        notify.info("Podaj kod z aplikacji 2FA.");
+      } else {
+        const code = err?.code;
+        const fields = authErrorFields(code);
+        setEmailErr(fields.has("email"));
+        setPassErr(fields.has("password"));
+        notify.error(authErrorPL(code));
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function confirmMfa(e) {
+    e.preventDefault();
+    setLoading(true);
+    setTotpErr(false);
+    try {
+      const totpHint =
+        resolver.hints.find((h) => h.factorId === "totp") || resolver.hints[0];
+      const assertion = TotpMultiFactorGenerator.assertionForSignIn(
+        totpHint.uid,
+        kod
+      );
+      await resolver.resolveSignIn(assertion);
+      notify.success("Zalogowano (2FA).");
+      nav("/profil");
+    } catch (err) {
+      setTotpErr(true);
       notify.error(authErrorPL(err?.code));
     } finally {
       setLoading(false);
@@ -32,79 +75,104 @@ export default function ResetHasla() {
   }
 
   return (
-    <>
-      <section className={s.container}>
-        <div className={s.box} role="region" aria-labelledby="reset-title">
-          {/* банер із лісом */}
-          <div className={s.banner} role="img" aria-label="Las — ilustracja" />
+    <section className={`${s.wrap} ${s.forestPanel}`} aria-label="Logowanie">
+      <div className="container">
+        <div className={s.card}>
+          <div className={s.cardHero} aria-hidden="true" />
 
-          <div className={s.header}>
-            <span className={s.iconCircle} aria-hidden>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M7 10V7a5 5 0 1 1 10 0v3"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-                <rect
-                  x="5"
-                  y="10"
-                  width="14"
-                  height="10"
-                  rx="2"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-              </svg>
-            </span>
-            <div>
-              <h2 id="reset-title" className={s.title}>
-                Reset hasła
-              </h2>
+          <div className={s.cardBody}>
+            <div className={s.heading}>
+              <span className={s.iconLock} aria-hidden="true" />
+              <h2 className={s.title}>Logowanie</h2>
               <p className={s.subtitle}>
-                Wpisz swój e-mail — wyślemy bezpieczny link do zmiany hasła.
+                Wprowadź e-mail i hasło, aby wejść do profilu.
               </p>
             </div>
+
+            {!resolver ? (
+              <form onSubmit={submit} className={s.form}>
+                <label className={s.label}>
+                  E-mail
+                  <input
+                    className={`${s.input} ${emailErr ? s.inputError : ""}`}
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      if (emailErr) setEmailErr(false);
+                    }}
+                    type="email"
+                    autoComplete="username"
+                    required
+                    aria-invalid={emailErr || undefined}
+                  />
+                </label>
+
+                <label className={s.label}>
+                  Hasło
+                  <input
+                    className={`${s.input} ${passErr ? s.inputError : ""}`}
+                    value={haslo}
+                    onChange={(e) => {
+                      setHaslo(e.target.value);
+                      if (passErr) setPassErr(false);
+                    }}
+                    type="password"
+                    autoComplete="current-password"
+                    required
+                    aria-invalid={passErr || undefined}
+                  />
+                </label>
+
+                <div className={s.actions}>
+                  <button
+                    className={s.btnPrimary}
+                    type="submit"
+                    disabled={loading}
+                  >
+                    {loading ? "Logowanie..." : "Zaloguj"}
+                  </button>
+                  <Link to="/reset-hasla" className={s.btnGhost}>
+                    Nie pamiętasz hasła?
+                  </Link>
+                </div>
+              </form>
+            ) : (
+              <form onSubmit={confirmMfa} className={s.form}>
+                <label className={s.label}>
+                  Kod TOTP
+                  <input
+                    className={`${s.input} ${totpErr ? s.inputError : ""}`}
+                    value={kod}
+                    onChange={(e) => {
+                      setKod(e.target.value);
+                      if (totpErr) setTotpErr(false);
+                    }}
+                    placeholder="000000"
+                    inputMode="numeric"
+                    autoComplete="one-time-code"
+                    aria-invalid={totpErr || undefined}
+                    required
+                  />
+                </label>
+
+                <div className={s.actions}>
+                  <button
+                    className={s.btnPrimary}
+                    type="submit"
+                    disabled={loading}
+                  >
+                    {loading ? "Potwierdzanie..." : "Potwierdź"}
+                  </button>
+                </div>
+              </form>
+            )}
+
+            <p className={s.meta}>
+              Nie masz konta? <Link to="/rejestracja">Zarejestruj się</Link>
+            </p>
           </div>
-
-          <form onSubmit={submit} className={s.form}>
-            <label className={s.label}>
-              E-mail
-              <input
-                className={s.input}
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
-                required
-                placeholder="twoj@email.com"
-              />
-            </label>
-
-            <div className={s.actions}>
-              <button className={s.button} type="submit" disabled={loading}>
-                {loading ? "Wysyłanie..." : "Wyślij link"}
-              </button>
-              <button
-                type="button"
-                className={s.btnGhost}
-                onClick={() => nav("/logowanie")}
-              >
-                Powrót do logowania
-              </button>
-            </div>
-          </form>
-
-          <p className={s.helper}>
-            Jeśli nie widzisz wiadomości — sprawdź folder <strong>Spam</strong>{" "}
-            lub
-            <strong> Oferty</strong>.
-          </p>
         </div>
-      </section>
-      {/* <ResetHelp />
-      <ResetFaq /> */}
-      
-    </>
+      </div>
+    </section>
   );
 }

@@ -1,63 +1,206 @@
 @use "./_vars" as *;
 
-.container {
-  min-height: calc(100dvh - 80px);
+$accent: #32675f;
+$ink: #0f172a;
+
+/* full-bleed forest bg */
+.wrap {
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  width: 100vw;
+  @supports (width: 100dvw) {
+    width: 100dvw;
+  }
+  position: relative;
+  overflow: hidden;
+  padding: clamp(28px, 6vw, 80px) 0;
+}
+.forestPanel {
+  isolation: isolate;
+  overflow: hidden;
+}
+.forestPanel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+      520px 240px at 50% 6%,
+      rgba(50, 103, 95, 0.1),
+      transparent 70%
+    ),
+    radial-gradient(
+      140% 100% at 50% 8%,
+      transparent 65%,
+      rgba(13, 44, 38, 0.06) 100%
+    );
+  mix-blend-mode: multiply;
+}
+
+/* glass card */
+.card {
+  position: relative;
+  z-index: 1;
+  width: min(760px, 100%);
+  margin: 0 auto;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  border: 1px solid rgba(2, 8, 23, 0.06);
+  box-shadow: 0 22px 48px rgba(8, 28, 24, 0.14),
+    0 3px 10px rgba(8, 28, 24, 0.08);
+}
+
+/* верхній банер з лісом і затуханням вниз */
+.cardHero {
+  height: 170px;
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+  background: linear-gradient(
+      to bottom,
+      rgba(18, 54, 48, 0.1),
+      rgba(18, 54, 48, 0) 50%,
+      rgba(255, 255, 255, 0.85) 100%
+    ),
+    url("/img/forest-bg.jpg") center/cover no-repeat;
+}
+.cardBody {
+  padding: clamp(16px, 3.2vw, 24px);
+}
+
+/* шапка */
+.heading {
   display: grid;
-  place-items: center;
-  padding: 16px;
+  grid-template-columns: 32px 1fr;
+  align-items: center;
+  gap: 10px;
+  margin: -50px 0 12px; /* трішки наїжджає на геро */
 }
-
-.box {
-  width: 100%;
-  max-width: 480px;
-  background: #fff;
-  border: 1px solid $color-border;
-  border-radius: 16px;
-  padding: 16px;
+.iconLock {
+  width: 32px;
+  height: 32px;
+  border-radius: 9999px;
+  background: #a78bfa;
+  -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M12 1a5 5 0 00-5 5v3H6a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2v-8a2 2 0 00-2-2h-1V6a5 5 0 00-5-5zm0 2a3 3 0 013 3v3H9V6a3 3 0 013-3z"/></svg>')
+    center/contain no-repeat;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M12 1a5 5 0 00-5 5v3H6a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2v-8a2 2 0 00-2-2h-1V6a5 5 0 00-5-5zm0 2a3 3 0 013 3v3H9V6a3 3 0 013-3z"/></svg>')
+    center/contain no-repeat;
+  box-shadow: 0 4px 12px rgba(167, 139, 250, 0.35);
 }
-
 .title {
-  margin: 0 0 12px;
-  font-size: 22px;
+  margin: 0;
   font-weight: 800;
+  font-size: clamp(20px, 2.3vw, 24px);
+  letter-spacing: -0.01em;
+  color: $ink;
+}
+.subtitle {
+  grid-column: 2 / -1;
+  margin: 4px 0 0;
+  color: color-mix(in srgb, $ink 70%, $accent 30%);
+  font-size: 14px;
 }
 
+/* форма */
 .form {
   display: grid;
-  gap: 10px;
+  gap: 12px;
+  margin-top: 6px;
 }
 .label {
   display: grid;
   gap: 6px;
+  font-weight: 600;
   font-size: 14px;
+  color: color-mix(in srgb, $ink 80%, $accent 20%);
 }
 .input {
-  @include input;
+  @include input; /* твій міксин */
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 12px;
 }
-.button {
-  @include btn;
-}
+.actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  margin-top: 6px;
 
-.link {
-  margin-top: 8px;
-  font-size: 14px;
-  a {
-    color: $color-primary;
+  @media (max-width: 520px) {
+    grid-template-columns: 1fr;
   }
 }
-.message {
-  margin-top: 8px;
-  font-size: 14px;
-  color: #334155;
+
+/* кнопки у бренд-стилі */
+.btnPrimary {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 12px;
+  background: #32675f;
+  color: #fff;
+  border: 1px solid #32675f;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  transition: transform 0.15s ease, background 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover,
+  &:focus-visible {
+    background: color-mix(in srgb, #32675f 90%, black);
+    box-shadow: 0 8px 20px rgba(50, 103, 95, 0.35);
+    transform: translateY(-1px);
+  }
+  &:active {
+    transform: translateY(0);
+  }
+}
+.btnGhost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 12px;
+  background: transparent;
+  color: #32675f;
+  border: 1px solid #32675f;
+  font-weight: 700;
+  transition: background 0.2s ease, transform 0.15s ease;
+
+  &:hover,
+  &:focus-visible {
+    background: rgba(50, 103, 95, 0.08);
+    transform: translateY(-1px);
+  }
+  &:active {
+    transform: translateY(0);
+  }
 }
 
+/* підвал під формою */
+.meta {
+  margin: 12px 0 2px;
+  font-size: 14px;
+  color: color-mix(in srgb, $ink 65%, $accent 35%);
+
+  a {
+    color: $accent;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+}
+
+/* повідомлення/помилки (твій існуючий блок лишив) */
 .inputError,
 .input[aria-invalid="true"] {
   border-color: #ef4444 !important;
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
   background-color: #fff;
 }
-
 .inputError:focus,
 .inputError:focus-visible,
 .input[aria-invalid="true"]:focus,

@@ -75,74 +75,103 @@ export default function Login() {
   }
 
   return (
-    <section className={s.container}>
-      <div className={s.box}>
-        <h2 className={s.title}>Logowanie</h2>
+    <section className={`${s.wrap} ${s.forestPanel}`} aria-label="Logowanie">
+      <div className="container">
+        <div className={s.card}>
+          <div className={s.cardHero} aria-hidden="true" />
 
-        {!resolver ? (
-          <form onSubmit={submit} className={s.form}>
-            <label className={s.label}>
-              E-mail
-              <input
-                className={`${s.input} ${emailErr ? s.inputError : ""}`}
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  if (emailErr) setEmailErr(false);
-                }}
-                type="email"
-                autoComplete="username"
-                required
-                aria-invalid={emailErr || undefined}
-              />
-            </label>
-            <label className={s.label}>
-              Hasło
-              <input
-                className={`${s.input} ${passErr ? s.inputError : ""}`}
-                value={haslo}
-                onChange={(e) => {
-                  setHaslo(e.target.value);
-                  if (passErr) setPassErr(false);
-                }}
-                type="password"
-                autoComplete="current-password"
-                required
-                aria-invalid={passErr || undefined}
-              />
-            </label>
-            <button className={s.button} type="submit" disabled={loading}>
-              {loading ? "Logowanie..." : "Zaloguj"}
-            </button>
-          </form>
-        ) : (
-          <form onSubmit={confirmMfa} className={s.form}>
-            <label className={s.label}>
-              Kod TOTP
-              <input
-                className={`${s.input} ${totpErr ? s.inputError : ""}`}
-                value={kod}
-                onChange={(e) => {
-                  setKod(e.target.value);
-                  if (totpErr) setTotpErr(false);
-                }}
-                placeholder="000000"
-                inputMode="numeric"
-                aria-invalid={totpErr || undefined}
-              />
-            </label>
-            <button className={s.button} type="submit" disabled={loading}>
-              {loading ? "Potwierdzanie..." : "Potwierdź"}
-            </button>
-          </form>
-        )}
+          <div className={s.cardBody}>
+            <div className={s.heading}>
+              <span className={s.iconLock} aria-hidden="true" />
+              <h2 className={s.title}>Logowanie</h2>
+              <p className={s.subtitle}>
+                Wprowadź e-mail i hasło, aby wejść do profilu.
+              </p>
+            </div>
 
-        <p className={s.link}>
-          <Link to="/reset-hasla">Nie pamiętasz hasła?</Link>
-        </p>
-        <p className={s.link}>
-          Nie masz konta? <Link to="/rejestracja">Zarejestruj się</Link>
-        </p>
+            {!resolver ? (
+              <form onSubmit={submit} className={s.form}>
+                <label className={s.label}>
+                  E-mail
+                  <input
+                    className={`${s.input} ${emailErr ? s.inputError : ""}`}
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      if (emailErr) setEmailErr(false);
+                    }}
+                    type="email"
+                    autoComplete="username"
+                    required
+                    aria-invalid={emailErr || undefined}
+                  />
+                </label>
+
+                <label className={s.label}>
+                  Hasło
+                  <input
+                    className={`${s.input} ${passErr ? s.inputError : ""}`}
+                    value={haslo}
+                    onChange={(e) => {
+                      setHaslo(e.target.value);
+                      if (passErr) setPassErr(false);
+                    }}
+                    type="password"
+                    autoComplete="current-password"
+                    required
+                    aria-invalid={passErr || undefined}
+                  />
+                </label>
+
+                <div className={s.actions}>
+                  <button
+                    className={s.btnPrimary}
+                    type="submit"
+                    disabled={loading}
+                  >
+                    {loading ? "Logowanie..." : "Zaloguj"}
+                  </button>
+                  <Link to="/reset-hasla" className={s.btnGhost}>
+                    Nie pamiętasz hasła?
+                  </Link>
+                </div>
+              </form>
+            ) : (
+              <form onSubmit={confirmMfa} className={s.form}>
+                <label className={s.label}>
+                  Kod TOTP
+                  <input
+                    className={`${s.input} ${totpErr ? s.inputError : ""}`}
+                    value={kod}
+                    onChange={(e) => {
+                      setKod(e.target.value);
+                      if (totpErr) setTotpErr(false);
+                    }}
+                    placeholder="000000"
+                    inputMode="numeric"
+                    autoComplete="one-time-code"
+                    aria-invalid={totpErr || undefined}
+                    required
+                  />
+                </label>
+
+                <div className={s.actions}>
+                  <button
+                    className={s.btnPrimary}
+                    type="submit"
+                    disabled={loading}
+                  >
+                    {loading ? "Potwierdzanie..." : "Potwierdź"}
+                  </button>
+                </div>
+              </form>
+            )}
+
+            <p className={s.meta}>
+              Nie masz konta? <Link to="/rejestracja">Zarejestruj się</Link>
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   );
