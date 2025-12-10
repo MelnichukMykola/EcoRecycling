@@ -9,6 +9,8 @@ import Profil from "./pages/Profil.jsx";
 import TwoFA from "./pages/TwoFA.jsx";
 import { AuthProvider, PrivateRoute } from "./auth/AuthContext.jsx";
 import layout from "./styles/Layout.module.scss";
+import DailyBoxes from "./pages/DailyBoxes.jsx";
+import CalculatorPage from "./pages/CalculatorPage.jsx";
 
 export default function App() {
     return (
@@ -20,6 +22,7 @@ export default function App() {
                     <Route path="/logowanie" element={<Login />} />
                     <Route path="/rejestracja" element={<Register />} />
                     <Route path="/reset-hasla" element={<ResetHasla />} />
+                    <Route path="/calculator" element={<CalculatorPage />} />
                     <Route
                         path="/profil"
                         element={

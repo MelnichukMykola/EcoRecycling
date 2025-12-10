@@ -1,0 +1,124 @@
+// src/styles/RecyclingCalculator.module.scss
+
+$color-primary: #4caf50; 
+$color-secondary: #ffd700; 
+$color-background-light: #ffffff; 
+$color-card-bg-light: #f9f9f9; 
+$color-text-dark: #333333; 
+$color-border-light: #e0e0e0; 
+$color-success: #28a745; 
+
+.calculatorContainer {
+  background: #29625a;
+  border: 1px solid $color-border-light;
+  border-radius: 12px;
+  padding: 3rem;
+  text-align: center;
+  color: $color-text-dark;
+  margin: 40px auto;
+  max-width: 550px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); 
+
+  h2 {
+    color: $color-primary;
+    margin-bottom: 10px;
+    font-size: 2rem;
+  }
+
+  .description {
+    color: #f7f7f7;
+    margin-bottom: 30px;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  label {
+    color: #fff !important;
+  }
+}
+
+.inputGroup {
+  text-align: left;
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: $color-text-dark;
+  }
+}
+
+.select, .input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid $color-border-light;
+  border-radius: 8px;
+  background: $color-card-bg-light;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s;
+
+  &:focus {
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px rgba($color-primary, 0.2);
+    outline: none;
+  }
+}
+
+// Sekcja Wyniku
+.resultBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #e6ffe6; // Bardzo jasna zieleń
+    border-left: 5px solid $color-primary;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.resultText {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: $color-text-dark;
+}
+
+.coinsValue {
+    display: block;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: $color-primary;
+    margin-top: 5px;
+}
+
+.addButton {
+  background: linear-gradient(90deg, $color-primary, #45a049);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: background 0.3s, transform 0.2s;
+  min-width: 150px;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba($color-primary, 0.4);
+  }
+
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+}
+
+.successMessage {
+    color: $color-success;
+    font-weight: 600;
+    margin-top: 15px;
+}

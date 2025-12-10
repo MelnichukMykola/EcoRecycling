@@ -17,12 +17,11 @@ import { auth } from "../../firebase.js";
 export default function Profil() {
   const { user, updateDisplayName, changePassword } = useAuth();
   const [displayName, setDisplayName] = useState(user?.displayName || "");
-  const [tab, setTab] = useState("overview"); // overview | profile | password
+  const [tab, setTab] = useState("overview"); 
   const notify = useNotify();
 
-  const { balance } = useCoins(user?.uid);
+  const { balance } = useCoins(user?.uid); 
 
-  // --- zmiana hasła (reauth + 2FA) ---
   const [newPass, setNewPass] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
   const [showReauth, setShowReauth] = useState(false);
@@ -164,11 +163,11 @@ export default function Profil() {
             </div>
           </div>
 
-          <div className={s.actionsRow}>
+          {/* <div className={s.actionsRow}>
             <Link to="/2fa" className={s.linkBtn}>
               Skonfiguruj 2FA (TOTP)
             </Link>
-          </div>
+          </div> */}
         </div>
       )}
 
@@ -231,19 +230,6 @@ export default function Profil() {
                   onChange={(e) => setCurrentPass(e.target.value)}
                 />
               </label>
-
-              {resolver && (
-                <label className={s.label}>
-                  Kod TOTP (2FA)
-                  <input
-                    className={s.input}
-                    value={totp}
-                    onChange={(e) => setTotp(e.target.value)}
-                    placeholder="000000"
-                    inputMode="numeric"
-                  />
-                </label>
-              )}
 
               <button className={s.button} type="submit" disabled={loading}>
                 {loading ? "Potwierdzanie..." : "Potwierdź i zmień hasło"}

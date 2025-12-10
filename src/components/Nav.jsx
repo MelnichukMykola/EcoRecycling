@@ -40,6 +40,9 @@ export default function Nav() {
           <Link className={na.link} to="/profil">
             Profil
           </Link>
+          <Link className={na.link} to="/calculator">
+            Kalkulator
+          </Link>
         </nav>
 
         <div className={styles.actions}>
