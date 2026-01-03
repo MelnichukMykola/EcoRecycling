@@ -36,7 +36,7 @@ const DATA = [
 
 export default function Leaderboard() {
   const top = DATA[0]?.kg ?? 1;
-  const ecoPerKg = 8; // przykładowy przelicznik
+  const ecoPerKg = 8;
 
   return (
     <section

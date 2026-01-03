@@ -4,6 +4,7 @@ import { useAuth } from "../auth/AuthContext.jsx";
 import styles from "../styles/Nav.module.scss";
 import { LogOut } from "lucide-react";
 import na from "../styles/NavAddons.module.scss";
+import cannabisLogo from "../assets/cannabis.svg";
 
 export default function Nav() {
   const { user, signOutUser } = useAuth();
@@ -27,14 +28,14 @@ export default function Nav() {
           className={styles.brand}
           aria-label="EkoRecykling – strona główna"
         >
-          <img src="/cannabis.svg" alt="" className={styles.brandIcon} />
+          <img src={cannabisLogo} alt="" className={styles.brandIcon} />
           <span className={styles.brandText}>EkoRecykling</span>
         </Link>
         <nav className={na.menu}>
-          <a className={na.link} href="/#jak-to-dziala">
+          <a className={na.link} href="/jak-to-dziala">
             Jak to działa?
           </a>
-          <a className={na.link} href="/#ranking">
+          <a className={na.link} href="/ranking">
             Ranking
           </a>
           <Link className={na.link} to="/profil">
