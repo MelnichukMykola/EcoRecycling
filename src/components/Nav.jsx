@@ -32,12 +32,12 @@ export default function Nav() {
           <span className={styles.brandText}>EkoRecykling</span>
         </Link>
         <nav className={na.menu}>
-          <a className={na.link} href="/jak-to-dziala">
+          <Link className={na.link} to="/jak-to-dziala">
             Jak to działa?
-          </a>
-          <a className={na.link} href="/ranking">
+          </Link>
+          <Link className={na.link} to="/ranking">
             Ranking
-          </a>
+          </Link>
           <Link className={na.link} to="/profil">
             Profil
           </Link>
