@@ -13,14 +13,15 @@ import {
   TotpMultiFactorGenerator,
 } from "firebase/auth";
 import { auth } from "../../firebase.js";
+import SupportForm from "../components/SupportForm.jsx";
 
 export default function Profil() {
   const { user, updateDisplayName, changePassword } = useAuth();
   const [displayName, setDisplayName] = useState(user?.displayName || "");
-  const [tab, setTab] = useState("overview"); 
+  const [tab, setTab] = useState("overview");
   const notify = useNotify();
 
-  const { balance } = useCoins(user?.uid); 
+  const { balance } = useCoins(user?.uid);
 
   const [newPass, setNewPass] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
@@ -146,6 +147,12 @@ export default function Profil() {
           >
             Zmiana hasła
           </button>
+          <button
+            className={`${s.tab} ${tab === "support" ? s.tabActive : ""}`}
+            onClick={() => setTab("support")}
+          >
+            Wsparcie
+          </button>
         </div>
       </header>
 
@@ -162,12 +169,6 @@ export default function Profil() {
               <span className={s.balanceUnit}>EcoCoins</span>
             </div>
           </div>
-
-          {/* <div className={s.actionsRow}>
-            <Link to="/2fa" className={s.linkBtn}>
-              Skonfiguruj 2FA (TOTP)
-            </Link>
-          </div> */}
         </div>
       )}
 
@@ -238,6 +239,8 @@ export default function Profil() {
           )}
         </div>
       )}
+
+      {tab === "support" && <SupportForm user={user} />}
     </section>
   );
 }
