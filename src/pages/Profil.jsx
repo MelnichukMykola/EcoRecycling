@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../auth/AuthContext.jsx";
-import { Link } from "react-router-dom";
 import { useCoins } from "../coins/useCoins.js";
 import { useNotify } from "../ui/useNotify.js";
 import { authErrorPL } from "../utils/authErrorsPL.js";
 import s from "../styles/Profil.module.scss";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 import {
   EmailAuthProvider,
@@ -19,6 +20,7 @@ export default function Profil() {
   const { user, updateDisplayName, changePassword } = useAuth();
   const [displayName, setDisplayName] = useState(user?.displayName || "");
   const [tab, setTab] = useState("overview");
+  const [history, setHistory] = useState([]);
   const notify = useNotify();
 
   const { balance } = useCoins(user?.uid);
@@ -30,6 +32,21 @@ export default function Profil() {
   const [totp, setTotp] = useState("");
   const [resolver, setResolver] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (user?.uid) {
+      const savedHistory =
+        JSON.parse(localStorage.getItem(`history_${user.uid}`)) || [];
+      setHistory(savedHistory);
+    }
+  }, [user, tab]);
+
+  const clearHistory = () => {
+    if (window.confirm("Czy na pewno chcesz wyczyścić historię?")) {
+      localStorage.removeItem(`history_${user.uid}`);
+      setHistory([]);
+    }
+  };
 
   if (!user) return <p>Brak danych użytkownika.</p>;
 
@@ -123,6 +140,73 @@ export default function Profil() {
     }
   }
 
+  const exportToCSV = () => {
+    if (history.length === 0) return;
+
+    // Nagłówki
+    const headers = ["Data", "Material", "Ilosc (EC)"];
+
+    // Naprawa formatu: cudzysłowy zapobiegają rozbijaniu kolumn przez przecinki
+    const rows = history.map((item) => [
+      `"${item.date}"`,
+      `"${item.material}"`,
+      `"${item.amount}"`,
+    ]);
+
+    const csvContent = [
+      headers.join(","),
+      ...rows.map((e) => e.join(",")),
+    ].join("\n");
+
+    // Dodanie BOM (\ufeff), aby polskie znaki działały w Excelu/Numbers
+    const blob = new Blob(["\ufeff", csvContent], {
+      type: "text/csv;charset=utf-8;",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+
+    // Czytelna nazwa: historia_2026-01-03.csv
+    const dateStr = new Date().toISOString().split("T")[0];
+    link.download = `historia_recyklingu_${dateStr}.csv`;
+
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const exportToPDF = () => {
+    if (history.length === 0) return;
+
+    const doc = new jsPDF();
+    const dateStr = new Date().toISOString().split("T")[0];
+
+    doc.setFontSize(18);
+    doc.setTextColor(31, 109, 98);
+    doc.text("Raport EcoCoins", 14, 20);
+
+    doc.setFontSize(10);
+    doc.setTextColor(100);
+    doc.text(`Uzytkownik: ${user.email}`, 14, 28);
+
+    const tableColumn = ["Data", "Material", "Suma"];
+    const tableRows = history.map((item) => [
+      item.date,
+      item.material,
+      `${item.amount} EC`,
+    ]);
+
+    autoTable(doc, {
+      head: [tableColumn],
+      body: tableRows,
+      startY: 35,
+      theme: "striped",
+      headStyles: { fillColor: [31, 109, 98] },
+      styles: { font: "helvetica" },
+    });
+
+    doc.save(`historia_recyklingu_${dateStr}.pdf`);
+  };
+
   return (
     <section className={s.container}>
       <header className={s.head}>
@@ -134,6 +218,12 @@ export default function Profil() {
             onClick={() => setTab("overview")}
           >
             Przegląd
+          </button>
+          <button
+            className={`${s.tab} ${tab === "history" ? s.tabActive : ""}`}
+            onClick={() => setTab("history")}
+          >
+            Historia
           </button>
           <button
             className={`${s.tab} ${tab === "profile" ? s.tabActive : ""}`}
@@ -156,6 +246,7 @@ export default function Profil() {
         </div>
       </header>
 
+      {/* Огляд */}
       {tab === "overview" && (
         <div className={s.panel}>
           <p className={s.signedAs}>
@@ -169,6 +260,83 @@ export default function Profil() {
               <span className={s.balanceUnit}>EcoCoins</span>
             </div>
           </div>
+        </div>
+      )}
+
+      {tab === "history" && (
+        <div className={s.panel}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "20px",
+              flexWrap: "wrap",
+              gap: "10px",
+            }}
+          >
+            <h3 style={{ margin: 0 }}>Historia recyklingu</h3>
+
+            {history.length > 0 && (
+              <div style={{ display: "flex", gap: "8px" }}>
+                {/* Wybór formatu */}
+                <button
+                  onClick={exportToCSV}
+                  className={s.linkBtn}
+                  style={{ fontSize: "11px", height: "30px" }}
+                >
+                  💾 CSV
+                </button>
+                <button
+                  onClick={exportToPDF}
+                  className={s.linkBtn}
+                  style={{
+                    fontSize: "11px",
+                    height: "30px",
+                    background: "#7c3aed",
+                    color: "white",
+                    borderColor: "transparent",
+                  }}
+                >
+                  📄 PDF
+                </button>
+
+                <div
+                  style={{
+                    width: "1px",
+                    background: "#e2e8f0",
+                    margin: "0 4px",
+                  }}
+                />
+
+                <button
+                  onClick={clearHistory}
+                  className={s.linkBtn}
+                  style={{ fontSize: "11px", height: "30px", color: "#ef4444" }}
+                >
+                  Wyczyścić historię
+                </button>
+              </div>
+            )}
+          </div>
+
+          {history.length === 0 ? (
+            <p className={s.note}>Brak zapisanych transakcji.</p>
+          ) : (
+            <div className={s.historyList}>
+              {history.map((item) => (
+                <div key={item.id} className={s.historyItem}>
+                  <div className={s.historyInfo}>
+                    <span className={s.historyMaterial}>{item.material}</span>
+                    <span className={s.historyDate}>{item.date}</span>
+                  </div>
+                  <div className={s.historyAmount}>
+                    +{item.amount} <small>EC</small>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
@@ -190,6 +358,7 @@ export default function Profil() {
         </div>
       )}
 
+      {/* Зміна пароля */}
       {tab === "password" && (
         <div className={s.panel}>
           {!showReauth ? (
@@ -240,6 +409,7 @@ export default function Profil() {
         </div>
       )}
 
+      {/* Підтримка */}
       {tab === "support" && <SupportForm user={user} />}
     </section>
   );
