@@ -1,4 +1,3 @@
-// src/components/RecyclingCalculator.jsx
 import React, { useState } from "react";
 import { MATERIAL_VALUES } from "../utils/materialsData";
 import { useCoins } from "../coins/useCoins";
@@ -6,7 +5,6 @@ import { useAuth } from "../auth/AuthContext";
 import s from "../styles/RecyclingCalculator.module.scss";
 
 export default function RecyclingCalculator() {
-  // UWAGA: Musisz mieć działający useAuth()
   const { user } = useAuth();
 
   const userId = user?.uid || "guest";
@@ -52,7 +50,7 @@ export default function RecyclingCalculator() {
   };
 
   const handleAddToPortfolio = () => {
-    if (resultCoins <= 0) return;
+    if (resultCoins <= 0 || !user) return;
 
     addCoins(resultCoins);
 
@@ -69,11 +67,16 @@ export default function RecyclingCalculator() {
     const updatedHistory = [newTransaction, ...existingHistory];
     localStorage.setItem(`history_${userId}`, JSON.stringify(updatedHistory));
 
+    const currentTotal =
+      Number(localStorage.getItem(`total_eco_${userId}`)) || 0;
+    localStorage.setItem(`total_eco_${userId}`, currentTotal + resultCoins);
+
     setIsAdded(true);
 
     setTimeout(() => {
       setWeight("");
       setResultCoins(0);
+      setIsAdded(false);
     }, 1500);
   };
 
@@ -138,10 +141,7 @@ export default function RecyclingCalculator() {
           </button>
         </div>
 
-        {/* Wyświetlanie komunikatu sukcesu */}
-        {isAdded && (
-          <p className={s.successMessage}>Pomyślnie dodano EcoCoins!</p>
-        )}
+        {isAdded && <p className={s.successMessage}>EcoCoins dodano!</p>}
       </div>
     </div>
   );

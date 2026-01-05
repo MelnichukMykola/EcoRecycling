@@ -344,7 +344,7 @@ export default function Profil() {
         <div className={s.panel}>
           <form onSubmit={saveProfile} className={s.form}>
             <label className={s.label}>
-              Nazwa wyświetlana
+              Nazwa użytkownika
               <input
                 className={s.input}
                 value={displayName}
